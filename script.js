@@ -11,11 +11,13 @@ $( document ).ready(function() {
             // console.log( key + ": " + value );
             console.log( value.gs$cell.inputValue); // WORKING
 
+            var valeur = htmlEntities(value.gs$cell.inputValue) // ON nettoie le code qui provient de l'API celui qui n'est pas traiter.
+
             if(value.gs$cell.row === "1") // Si la cellule = 1 alors on remplie le tableau en tête.
             {
 
                 //enTete += [value.gs$cell.inputValue]
-                enTete.push(value.gs$cell.inputValue)
+                enTete.push(valeur.toUpperCase())
 
             }
             else
@@ -34,7 +36,7 @@ $( document ).ready(function() {
 
                 }
 
-                monTableau += [value.gs$cell.inputValue + aLaLigne]
+                monTableau += [valeur + aLaLigne]
 
             }
 
@@ -51,3 +53,19 @@ $( document ).ready(function() {
     });
 
 });
+
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/*var HTMLEntities = function(str){
+	var str = String(str), chars = {
+	  '&':'&',
+	  '"':'"',
+	  '<':'<',
+	  '>':'>'
+	};
+	for (var i in chars) 
+	  	str=str.replace(new RegExp(i,'g'), chars[i]);
+	return str;
+};*/
