@@ -6,17 +6,49 @@ $( document ).ready(function() {
 
         var monTableau = []; // On déclare un nouveau tableau qui va recevoir toute les données sauf entête
         var enTete = []; // On déclare un nouveau tableau qui va recevoir le nom des colonnes.
+        var valeur = "";
+        var colonnePhoto = 0;
+
 
         $.each( test, function( key, value ) {
             // console.log( key + ": " + value );
             console.log( value.gs$cell.inputValue); // WORKING
 
-            var valeur = htmlEntities(value.gs$cell.inputValue) // ON nettoie le code qui provient de l'API celui qui n'est pas traiter.
+            // Si on n'est dans la colonne Photo alors on transforme la valeur en balise image. 
+            /*if(value.gs$cell.inputValue === "Photo")
+            {
+
+                if(value.gs$cell.row != "1")
+                {
+
+                    valeur = '<img src="data:image/png;base64,' + value.gs$cell.inputValue + '" />'
+
+                }
+
+
+            }
+            else
+            {
+
+
+            }*/
+
+            valeur = htmlEntities(value.gs$cell.inputValue) // ON nettoie le code qui provient de l'API celui qui n'est pas traiter.
+
 
             if(value.gs$cell.row === "1") // Si la cellule = 1 alors on remplie le tableau en tête.
             {
 
                 //enTete += [value.gs$cell.inputValue]
+
+                if(value.gs$cell.inputValue === "Photo")
+                {
+
+                    colonnePhoto = key + 1
+                    console.log('Index photo : ' + colonnePhoto)
+
+                }
+
                 enTete.push(valeur.toUpperCase())
 
             }
@@ -35,6 +67,14 @@ $( document ).ready(function() {
                     var aLaLigne = " - "
 
                 }
+
+                if(value.gs$cell.row != "1" && value.gs$cell.col === `${colonnePhoto}`)
+                {
+
+                    valeur = '<img src="data:image/png;base64,' + value.gs$cell.inputValue + '" />'
+
+                }
+                
 
                 monTableau += [valeur + aLaLigne]
 
@@ -57,15 +97,3 @@ $( document ).ready(function() {
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-/*var HTMLEntities = function(str){
-	var str = String(str), chars = {
-	  '&':'&',
-	  '"':'"',
-	  '<':'<',
-	  '>':'>'
-	};
-	for (var i in chars) 
-	  	str=str.replace(new RegExp(i,'g'), chars[i]);
-	return str;
-};*/
